@@ -20,7 +20,7 @@ export default function ItemPage({ params }: { params: { item: string } }) {
   return (
     <div className="flex flex-col justify-between h-screen gap-5">
       <div className="flex flex-row justify-between items-center p-2">
-        <Icon IconsImg={<MdOutlineKeyboardArrowLeft />} href={""} />
+        <Icon IconsImg={<MdOutlineKeyboardArrowLeft />} href="http://localhost:3000/home" />
         {params.item}
         <Dialog>
       <DialogTrigger asChild>

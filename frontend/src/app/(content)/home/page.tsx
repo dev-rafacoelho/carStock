@@ -198,7 +198,7 @@ export default function Home() {
       <ul className="gap-5 flex flex-col w-full">
         {carros.map((carro) => (
           <li key={carro.id} className="flex w-full">
-            <Card NomeVeiculo={carro.nome} Marca={carro.marca} img={""} />
+            <Card NomeVeiculo={carro.nome} Marca={carro.marca} />
           </li>
         ))}
       </ul>

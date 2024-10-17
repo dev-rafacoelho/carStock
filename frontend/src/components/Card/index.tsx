@@ -3,16 +3,15 @@ import Image from "next/image";
 import Link from "next/link";
 
 interface CardProps {
-  img: string;
   NomeVeiculo: string;
   Marca: string;
 }
 
-export default function Card({ img, NomeVeiculo, Marca }: CardProps) {
+export default function Card({ NomeVeiculo, Marca }: CardProps) {
   return (
     <div className="flex flex-col w-full">
       <div className="w-full h-[158px] bg-[#EDEDFF] rounded-md flex flex-col">
-        <Link href="#"
+        <Link href={`http://localhost:3000/${NomeVeiculo}`}
          className="text-[#332FF6] flex justify-end pt-5 pr-5">
           <FaArrowRight />
         </Link>
@@ -23,7 +22,7 @@ export default function Card({ img, NomeVeiculo, Marca }: CardProps) {
           </div>
           <Image
             className="flex justify-end self-end"
-            src={img}
+            src=""
             alt="Picture of the author"
             width={110}
             height={100}
