@@ -2,8 +2,22 @@ import Icon from "../Icon";
 import { AiOutlineTrademark } from "react-icons/ai";
 import { FaCar, FaPaintBrush, FaCalendarAlt, FaGasPump } from "react-icons/fa";
 import { MdDirectionsBike } from "react-icons/md";
+import { useState, useEffect } from "react";
+
+// Define o tipo para os carros
+type Carro = {
+  id: string;
+  nome: string;
+  marca: string;
+  cor: string;
+  ano: number;
+  combustivel: string;
+  tipo: string;
+};
+
 
 export default function CardInfo() {
+
   return (
     <div className="bg-[#EDEDFF] rounded-lg p-5">
       <h2 className="font-semibold mb-4">Overview</h2>
