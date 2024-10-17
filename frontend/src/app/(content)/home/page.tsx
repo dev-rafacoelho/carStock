@@ -16,21 +16,46 @@ import {
 import Category from "@/components/Category";
 import Card from "@/components/Card";
 import { Label } from "@/components/ui/label";
-import { useState } from "react";
+import { useState, useEffect } from "react";
+
+// Define o tipo para os carros
+type Carro = {
+  id: string;
+  nome: string;
+  marca: string;
+  cor: string;
+  ano: number;
+  combustivel: string;
+  tipo: string;
+};
 
 export default function Home() {
-  const carros = [
-    { img: "/path-to-image1.jpg", NomeVeiculo: "Biz", Marca: "Honda" },
-    { img: "/path-to-image2.jpg", NomeVeiculo: "Civic", Marca: "Honda" },
-    { img: "/path-to-image3.jpg", NomeVeiculo: "Gol", Marca: "Volkswagen" },
-  ];
+  const [carros, setCarros] = useState<Carro[]>([]); // Atualizando o estado para usar o tipo Carro
 
-  const [car, setCar] = useState({
+  // Função para buscar os carros da API
+  const fetchCarros = async () => {
+    try {
+      const response = await fetch("http://localhost:3003/home/cars"); // Rota do backend
+      if (!response.ok) {
+        throw new Error("Erro ao buscar carros");
+      }
+      const data: Carro[] = await response.json(); // Especifica que a resposta é uma lista de Carros
+      setCarros(data); // Atualiza o estado com os carros recebidos
+    } catch (error) {
+      console.error("Erro ao buscar carros:", error);
+    }
+  };
+
+  useEffect(() => {
+    fetchCarros();
+  }, []);
+
+  const [car, setCar] = useState<Carro>({
     id: "",
     nome: "",
     marca: "",
     cor: "",
-    ano: "",
+    ano: 0,
     combustivel: "",
     tipo: "",
   });
@@ -51,30 +76,25 @@ export default function Home() {
           tipo: car.tipo,
         }),
       });
-  
+
       if (!response.ok) {
         throw new Error("Erro ao enviar dados de chamada para o servidor");
       }
-  
+
       setCar({
         id: "",
         nome: "",
         marca: "",
         cor: "",
-        ano: "",
+        ano: 0,
         combustivel: "",
         tipo: "",
       });
-      alert("O registo foi feito com sucesso")
-
+      alert("O registo foi feito com sucesso");
     } catch (error) {
       console.error("Erro ao enviar dados de chamada para o servidor:", error);
     }
-  
   }
-
-  const [editCar, setEditCar] = useState({});
-  
 
   return (
     <div className="flex flex-col gap-10 px-14">
@@ -132,7 +152,7 @@ export default function Home() {
                   type="text"
                   className="col-span-3 border p-2"
                   value={car.ano}
-                  onChange={(e) => setCar({ ...car, ano: e.target.value })}
+                  onChange={(e) => setCar({ ...car, ano: parseInt(e.target.value) })} // Convertendo para número
                 />
               </div>
               <div className="grid grid-cols-4 items-center gap-4">
@@ -159,10 +179,6 @@ export default function Home() {
                   onChange={(e) => setCar({ ...car, tipo: e.target.value })}
                 />
               </div>
-              {/* <div className="grid w-full max-w-sm items-center gap-1.5">
-                <Label htmlFor="picture">Foto do veículo</Label>
-                <Input id="picture" type="file" />
-              </div> */}
             </div>
             <DialogFooter>
               <Button onClick={() => postCar()}>Adicionar</Button>
@@ -180,13 +196,9 @@ export default function Home() {
       <Search />
       <Category />
       <ul className="gap-5 flex flex-col w-full">
-        {carros.map((carro, index) => (
-          <li key={index} className="flex w-full">
-            <Card
-              img={carro.img}
-              NomeVeiculo={carro.NomeVeiculo}
-              Marca={carro.Marca}
-            />
+        {carros.map((carro) => (
+          <li key={carro.id} className="flex w-full">
+            <Card NomeVeiculo={carro.nome} Marca={carro.marca} img={""} />
           </li>
         ))}
       </ul>
